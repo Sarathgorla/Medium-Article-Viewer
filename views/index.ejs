@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medium Article Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input[type="url"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .article-content {
+      margin-top: 20px;
+    }
+    .article-content p {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Medium Article Viewer</h1>
+    <form action="/getArticle" method="get">
+      <label for="article-url">Enter Medium Article URL:</label>
+      <input type="url" id="article-url" name="url" placeholder="https://medium.com/..." required>
+      <button type="submit">Get Article</button>
+    </form>
+
+    <% if (articleContent) { %>
+      <div class="article-content">
+        <h2>Article Content:</h2>
+        <div>
+          <% articleContent.split("\n\n").forEach(paragraph => { %>
+            <p><%- paragraph.replace(/\n/g, '<br>') %></p> <!-- Use <%- %> for raw HTML -->
+          <% }); %>
+        </div>
+        <form action="/downloadArticle" method="post">
+          <!-- Use <%- %> to safely include raw HTML content in a hidden input -->
+          <input type="hidden" name="articleContent" value="<%- JSON.stringify(articleContent) %>">
+          <button type="submit">Download Article</button>
+        </form>
+      </div>
+    <% } %>
+    
+</body>
+</html>
